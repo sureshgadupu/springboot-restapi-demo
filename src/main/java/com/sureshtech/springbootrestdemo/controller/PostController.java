@@ -64,12 +64,6 @@ public class PostController {
 	public @ResponseBody void deletePost(@PathVariable("id") Integer id){
 		
 		Post post = postRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Resource Not found") );
-		
-//		for (Comment comment: post.getComments()) {
-//			//comment.setPost(null);
-//			System.out.println("in for loop");
-//			commentRepository.deleteById(comment.getId());
-//			}
 		//commentRepository.deleteAll(post.getComments());
 		//commentRepository.flush();
 		postRepository.deleteById(id);

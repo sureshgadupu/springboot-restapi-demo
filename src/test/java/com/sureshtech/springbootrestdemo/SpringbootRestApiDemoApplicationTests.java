@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import com.sureshtech.springbootrestdemo.entity.Post;
 //@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 class SpringbootRestApiDemoApplicationTests {
 
+	Logger log = LoggerFactory.getLogger(SpringbootRestApiDemoApplicationTests.class);	
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	
