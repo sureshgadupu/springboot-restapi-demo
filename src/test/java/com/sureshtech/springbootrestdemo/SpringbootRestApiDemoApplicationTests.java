@@ -94,13 +94,12 @@ class SpringbootRestApiDemoApplicationTests {
 		ResponseEntity<Post> responseEntiry =  restTemplate.getForEntity(ROOT_URL+"/posts/"+postId, Post.class);
 		assertNotNull(responseEntiry);
 		
-		//restTemplate.
-		System.out.print("0");
+		//restTemplate.		
 		restTemplate.delete(ROOT_URL+"posts/"+postId);
-		System.out.print("1");
+		
 		try {
 			responseEntiry =  restTemplate.getForEntity(ROOT_URL+"/posts/"+postId, Post.class);
-			System.out.print("2");
+			
 		}catch(Exception e) {
 			System.out.print(e);
 		}

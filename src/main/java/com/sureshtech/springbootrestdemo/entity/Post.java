@@ -16,6 +16,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 
 @Entity
 @Table(name="POSTS")
@@ -40,7 +42,8 @@ public class Post {
 	@Column(name="updated_on")
 	private Date updatedOn;
 	
-	@OneToMany(cascade = {CascadeType.ALL}) // with out this cascade property Comments will not be saved when you save the Post object
+	@JsonManagedReference // Commentout this annotation if you want to use @jsonIgnore in Comment.java 
+	@OneToMany(cascade = {CascadeType.ALL} , orphanRemoval = true) // with out this cascade property Comments will not be saved when you save the Post object
 	@JoinColumn(name="post_id")
 	private List<Comment> comments;
 	

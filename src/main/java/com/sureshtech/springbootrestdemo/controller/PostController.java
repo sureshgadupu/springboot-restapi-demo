@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.sureshtech.springbootrestdemo.repository.PostRepository;
 
 @RestController
 @RequestMapping("/posts")
+@CrossOrigin()
 public class PostController {
 	
 	@Autowired
@@ -61,7 +63,15 @@ public class PostController {
 	@DeleteMapping(value="/{id}")
 	public @ResponseBody void deletePost(@PathVariable("id") Integer id){
 		
-		postRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Resource Not found") );
+		Post post = postRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Resource Not found") );
+		
+//		for (Comment comment: post.getComments()) {
+//			//comment.setPost(null);
+//			System.out.println("in for loop");
+//			commentRepository.deleteById(comment.getId());
+//			}
+		//commentRepository.deleteAll(post.getComments());
+		//commentRepository.flush();
 		postRepository.deleteById(id);
 		
 	}
@@ -72,6 +82,7 @@ public class PostController {
 		
 		Post post = postRepository.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Resource Not found :"+postId) );
 		
+		comment.setPost(post);
 		post.getComments().add(comment);
 		postRepository.save(post);
 		 
