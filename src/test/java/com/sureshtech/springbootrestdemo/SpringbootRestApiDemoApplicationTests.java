@@ -84,10 +84,10 @@ class SpringbootRestApiDemoApplicationTests {
 		ResponseEntity<Post>  post = restTemplate.postForEntity(ROOT_URL+"/posts/10/comments",comment,  Post.class);
 		System.out.println(" post :"+ post.getBody().getComments().size());
 		for (Comment commentex  : post.getBody().getComments()) {
-			System.out.println(commentex.getId() + " : "+ commentex.getContent());
+			log.info(commentex.getId() + " : "+ commentex.getContent());
 		}
 		assertNotNull(post.getBody().getComments());
-		//assertNotNull(post.getBody().getComments());
+		
 	}
 	
 	@Test
@@ -104,7 +104,7 @@ class SpringbootRestApiDemoApplicationTests {
 			responseEntiry =  restTemplate.getForEntity(ROOT_URL+"/posts/"+postId, Post.class);
 			
 		}catch(Exception e) {
-			System.out.print(e);
+			log.error("Exception while deleting a Post ", e);
 		}
 		
 		

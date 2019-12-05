@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sureshtech.springbootrestdemo.entity.Comment;
 import com.sureshtech.springbootrestdemo.entity.Post;
 import com.sureshtech.springbootrestdemo.exception.ResourceNotFoundException;
-import com.sureshtech.springbootrestdemo.repository.CommentRepository;
-import com.sureshtech.springbootrestdemo.repository.PostRepository;
+import com.sureshtech.springbootrestdemo.service.PostService;
 
 @RestController
 @RequestMapping("/posts")
@@ -28,68 +27,63 @@ import com.sureshtech.springbootrestdemo.repository.PostRepository;
 public class PostController {
 	
 	@Autowired
-	private PostRepository postRepository;
+	private PostService postService;
 	
-	@Autowired
-	private CommentRepository commentRepository;
+	
 	
 	@ResponseStatus(HttpStatus.CREATED) // send HTTP 201 instead of 200 as new object created
 	@PostMapping("")
 	public Post createPost(@RequestBody Post post)
 	{
-		return postRepository.save(post);
+		return postService.createPost(post);
 	}
 	
 	@GetMapping("")
 	public List<Post> getAllPosts() {
-		return postRepository.findAll();
+		return postService.getAllPosts();
 	}
 	
 	
 	
 	@GetMapping(value="/{id}")
 	public Post getPost(@PathVariable("id") Integer id) {
-		return postRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Resource Not found") );
+		return postService.getPost(id);
 	}
 	
 	@PutMapping(value="/{id}")
 	public Post updatePost(Post post){
 		
-		postRepository.findById(post.getId()).orElseThrow( () -> new ResourceNotFoundException("Resource Not found") );
-		return postRepository.save(post);
+		
+		return postService.updatePost(post);
 		
 	}
 	
 	@DeleteMapping(value="/{id}")
 	public @ResponseBody void deletePost(@PathVariable("id") Integer id){
-		
-		Post post = postRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Resource Not found") );
-		//commentRepository.deleteAll(post.getComments());
-		//commentRepository.flush();
-		postRepository.deleteById(id);
-		
+		postService.deletePost(id);
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED) // send HTTP 201 instead of 200 as new object created
 	@PostMapping("/{id}/comments")
 	public Post createPostComments(@PathVariable("id") Integer postId, @RequestBody Comment comment) {
 		
-		Post post = postRepository.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Resource Not found :"+postId) );
-		
-		comment.setPost(post);
-		post.getComments().add(comment);
-		postRepository.save(post);
+//		Post post = postService.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Resource Not found :"+postId) );
+//		
+//		comment.setPost(post);
+//		post.getComments().add(comment);
+//		postService.save(post);
 		 
-		return post;
+		return postService.createPostComments(postId,comment);
 		
 	}
 	
 	@DeleteMapping("/{post_id}/comments/{comment_id}")
 	public void deletePostComments(@PathVariable("post_id") Integer postId, @PathVariable("comment_id") Integer commentId) {
 		
-		postRepository.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Post Not found :"+postId) );
-		commentRepository.findById(commentId).orElseThrow( () -> new ResourceNotFoundException("Comment Not found :"+commentId) );
-		commentRepository.deleteById(commentId);
+//		postService.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Post Not found :"+postId) );
+//		commentRepository.findById(commentId).orElseThrow( () -> new ResourceNotFoundException("Comment Not found :"+commentId) );
+//		commentRepository.deleteById(commentId);
+		postService.deletePostComments(postId, commentId);
 		
 		
 	}
