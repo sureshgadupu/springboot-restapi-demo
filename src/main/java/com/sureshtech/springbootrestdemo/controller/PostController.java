@@ -66,23 +66,12 @@ public class PostController {
 	@ResponseStatus(HttpStatus.CREATED) // send HTTP 201 instead of 200 as new object created
 	@PostMapping("/{id}/comments")
 	public Post createPostComments(@PathVariable("id") Integer postId, @RequestBody Comment comment) {
-		
-//		Post post = postService.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Resource Not found :"+postId) );
-//		
-//		comment.setPost(post);
-//		post.getComments().add(comment);
-//		postService.save(post);
-		 
 		return postService.createPostComments(postId,comment);
 		
 	}
 	
 	@DeleteMapping("/{post_id}/comments/{comment_id}")
 	public void deletePostComments(@PathVariable("post_id") Integer postId, @PathVariable("comment_id") Integer commentId) {
-		
-//		postService.findById(postId).orElseThrow( () -> new ResourceNotFoundException("Post Not found :"+postId) );
-//		commentRepository.findById(commentId).orElseThrow( () -> new ResourceNotFoundException("Comment Not found :"+commentId) );
-//		commentRepository.deleteById(commentId);
 		postService.deletePostComments(postId, commentId);
 		
 		
