@@ -1,8 +1,8 @@
 delete from users;
 INSERT INTO users (id, email, password, name) VALUES
-(1, 'admin@gmail.com', 'admin', 'Admin'),
-(2, 'david@gmail.com', 'david', 'David'),
-(3, 'ron@gmail.com', 'ron', 'Ron');
+(10, 'admin@gmail.com', 'admin', 'Admin'),
+(20, 'david@gmail.com', 'david', 'David'),
+(30, 'ron@gmail.com', 'ron', 'Ron');
 insert into posts(id, title, content, created_on, updated_on) values
 (10, 'Introducing SpringBoot', 'SpringBoot is awesome', '2017-05-10', null),
 (20, 'Securing Web applications', 'This post will show how to use SpringSecurity',

@@ -19,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.sureshtech.springbootrestdemo.entity.Comment;
 import com.sureshtech.springbootrestdemo.entity.Post;
+import com.sureshtech.springbootrestdemo.entity.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
@@ -62,7 +63,7 @@ class SpringbootRestApiDemoApplicationTests {
 	{
 		Post post = new Post();
 		post.setTitle("Testing create Post method");
-		//post.setContent("Testing create Post method content!!");
+		post.setContent("Testing create Post method content!!");
 		
 		ResponseEntity<Post> postResponse =
 		restTemplate.postForEntity(ROOT_URL+"/posts", post, Post.class);		
@@ -105,10 +106,23 @@ class SpringbootRestApiDemoApplicationTests {
 			
 		}catch(Exception e) {
 			log.error("Exception while deleting a Post ", e);
-		}
+		}		
 		
+	}
+	
+	
+	@Test	
+	public void testCreateUser()
+	{
+		User user = new User();
+		user.setEmail("test@test.com");
+		user.setName("Suresh");
+		user.setPassword("password");
 		
-		
+		ResponseEntity<User> userResponse =
+		restTemplate.postForEntity(ROOT_URL+"/users", user, User.class);		
+		assertNotNull(userResponse);		
+		assertNotNull(userResponse.getBody());
 	}
 
 }
