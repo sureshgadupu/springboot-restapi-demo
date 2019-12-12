@@ -62,7 +62,7 @@ class SpringbootRestApiDemoApplicationTests {
 	{
 		Post post = new Post();
 		post.setTitle("Testing create Post method");
-		//post.setContent("Testing create Post method content!!");
+		post.setContent("Testing create Post method content!!");
 		
 		ResponseEntity<Post> postResponse =
 		restTemplate.postForEntity(ROOT_URL+"/posts", post, Post.class);		
