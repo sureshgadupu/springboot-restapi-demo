@@ -2,8 +2,11 @@ package com.sureshtech.springbootrestdemo.controller;
 
 import java.util.List;
 
+import javax.validation.constraints.Min;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sureshtech.springbootrestdemo.entity.Comment;
 import com.sureshtech.springbootrestdemo.entity.Post;
-import com.sureshtech.springbootrestdemo.exception.ResourceNotFoundException;
 import com.sureshtech.springbootrestdemo.service.PostService;
 
 @RestController
 @RequestMapping("/posts")
 @CrossOrigin()
+@Validated
 public class PostController {
 	
 	@Autowired
@@ -46,7 +49,7 @@ public class PostController {
 	
 	
 	@GetMapping(value="/{id}")
-	public Post getPost(@PathVariable("id") Integer id) {
+	public Post getPost(@PathVariable("id") @Min(1) Integer id) {
 		return postService.getPost(id);
 	}
 	

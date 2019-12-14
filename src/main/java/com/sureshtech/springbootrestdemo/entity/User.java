@@ -6,6 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="USERS")
@@ -15,9 +18,12 @@ public class User {
 	@GeneratedValue(strategy =  GenerationType.AUTO)
 	private Integer id;
 	
+	@Size(min = 2,message = "name should be atleast 2 chars")
 	@Column(name="name",nullable = false , length =  100 )
 	private String name;
 	
+	@NotBlank(message = "Email should not be blank")
+	@Email(message = "Not a valid email")
 	@Column(name="email",nullable=false,length=100)
 	private String email;
 	
