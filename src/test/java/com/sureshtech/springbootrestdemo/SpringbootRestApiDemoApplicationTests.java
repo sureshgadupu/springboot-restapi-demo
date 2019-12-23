@@ -1,11 +1,12 @@
 package com.sureshtech.springbootrestdemo;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale.LanguageRange;
 
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +14,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +27,7 @@ import com.sureshtech.springbootrestdemo.entity.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
-//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+
 class SpringbootRestApiDemoApplicationTests {
 
 	Logger log = LoggerFactory.getLogger(SpringbootRestApiDemoApplicationTests.class);	
@@ -55,7 +59,7 @@ class SpringbootRestApiDemoApplicationTests {
 	public void testGetPostById() {
 		ResponseEntity<Post> responseEntity = restTemplate.getForEntity(ROOT_URL+"/posts/10", Post.class);
 		Post post = (Post) responseEntity.getBody();
-		assertEquals(10,  post.getId());
+		assertEquals(10, post.getId().intValue());
 	}
 	
 	@Test	
@@ -98,7 +102,6 @@ class SpringbootRestApiDemoApplicationTests {
 		ResponseEntity<Post> responseEntiry =  restTemplate.getForEntity(ROOT_URL+"/posts/"+postId, Post.class);
 		assertNotNull(responseEntiry);
 		
-		//restTemplate.		
 		restTemplate.delete(ROOT_URL+"posts/"+postId);
 		
 		try {
@@ -123,6 +126,30 @@ class SpringbootRestApiDemoApplicationTests {
 		restTemplate.postForEntity(ROOT_URL+"/users", user, User.class);		
 		assertNotNull(userResponse);		
 		assertNotNull(userResponse.getBody());
+	}
+	
+	@Test	
+	public void testi18n() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAcceptLanguage(LanguageRange.parse("en"));
+		
+		HttpEntity<String> entity = new HttpEntity<>("body", headers);
+		String user ="Suresh";
+		ResponseEntity<String> response = restTemplate.exchange(ROOT_URL+"/users/greet/"+user, HttpMethod.GET, entity, String.class);
+		assertEquals("Welcome Suresh",response.getBody());		
+		
+	}
+	
+	@Test	
+	public void testi18nFr() {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAcceptLanguage(LanguageRange.parse("fr"));
+		
+		HttpEntity<String> entity = new HttpEntity<>("body", headers);
+		String user ="Suresh";
+		ResponseEntity<String> response = restTemplate.exchange(ROOT_URL+"/users/greet/"+user, HttpMethod.GET, entity, String.class);
+		assertEquals("Bienvenu Suresh",response.getBody());		
+		
 	}
 
 }
