@@ -17,6 +17,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.sureshtech.springbootrestdemo.views.PostView;
 
 
 @Entity
@@ -25,19 +27,25 @@ public class Post {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonView(PostView.ExternalView.class)
 	private Integer id;
 	
+	@JsonView(PostView.ExternalView.class)
 	@Column(name="title", nullable = false,length=150)
 	private String title;
 	
+	@JsonView(PostView.ExternalView.class)
 	@Lob
 	@Column(name="content", nullable = false,columnDefinition = "TEXT")
 	private String content;
 	
+	@JsonView(PostView.InternalView.class)
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="created_on")
 	private Date createdOn = new Date();
 	
+	
+	@JsonView({PostView.InternalView.class , PostView.PartnerView.class})
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="updated_on")
 	private Date updatedOn;
