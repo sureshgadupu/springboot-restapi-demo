@@ -29,6 +29,9 @@ public class User {
 	
 	@Column(name="password",nullable=false,length=20)
 	private String password;
+	
+	@Column(name="address",nullable=true,length=20)
+	private String address;
 
 	public Integer getId() {
 		return id;
@@ -60,6 +63,14 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 	
 
