@@ -6,6 +6,7 @@ import javax.validation.constraints.Min;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,6 +24,11 @@ import com.sureshtech.springbootrestdemo.entity.Comment;
 import com.sureshtech.springbootrestdemo.entity.Post;
 import com.sureshtech.springbootrestdemo.service.PostService;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
+@Api(tags = "Blog post management service", value = "Post Controller")
 @RestController
 @RequestMapping("/posts")
 @CrossOrigin()
@@ -41,15 +47,16 @@ public class PostController {
 		return postService.createPost(post);
 	}
 	
+	@ApiOperation(value = "getAllPosts",notes = "Get list of all posts")
 	@GetMapping("")
 	public List<Post> getAllPosts() {
 		return postService.getAllPosts();
 	}
 	
 	
-	
-	@GetMapping(value="/{id}")
-	public Post getPost(@PathVariable("id") @Min(1) Integer id) {
+	@ApiOperation(value = "getPost",notes = "Retrieve Post based on id")
+	@GetMapping(value="/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+	public Post getPost(@ApiParam(required = true,value = "id" , example = "10") @PathVariable("id") @Min(1) Integer id) {
 		return postService.getPost(id);
 	}
 	

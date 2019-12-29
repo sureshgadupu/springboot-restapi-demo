@@ -10,18 +10,25 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "This model is  used for create users")
 @Entity
 @Table(name="USERS")
 public class User {
 	
+	@ApiModelProperty(notes = "Auto generated unique id of the User",position = 1, required = true)
 	@Id
 	@GeneratedValue(strategy =  GenerationType.AUTO)
 	private Integer id;
 	
+	@ApiModelProperty(notes = "Name of the User",position = 2, required = true)
 	@Size(min = 2,message = "name should be atleast 2 chars")
 	@Column(name="name",nullable = false , length =  100 )
 	private String name;
 	
+	@ApiModelProperty(notes = "Email of the User",position = 2, required = true)
 	@NotBlank(message = "Email should not be blank")
 	@Email(message = "Not a valid email")
 	@Column(name="email",nullable=false,length=100)
