@@ -2,18 +2,19 @@ package com.sureshtech.springbootrestdemo;
 
 
 
-import static org.junit.Assert.assertNotNull;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -21,10 +22,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sureshtech.springbootrestdemo.controller.PostJsonViewController;
 import com.sureshtech.springbootrestdemo.entity.Post;
 import com.sureshtech.springbootrestdemo.views.PostView;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.not;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class PostJsonViewControllerTest {
 	
@@ -36,7 +35,7 @@ public class PostJsonViewControllerTest {
 
 	RestTemplate restTemplate = new RestTemplate();
 	
-	static String URL = "http://localhost:8080";
+	static String URL = "http://localhost:8085";
 	
 	@org.junit.jupiter.api.Test
 	void contextLoads() {

@@ -34,7 +34,7 @@ class SpringbootRestApiDemoApplicationTests {
 	
 	private RestTemplate restTemplate = new RestTemplate();
 	
-	private static final String ROOT_URL = "http://localhost:8080";
+	private static final String ROOT_URL = "http://localhost:8085";
 	
 	@Test
 	void contextLoads() {

@@ -28,6 +28,7 @@ import io.swagger.annotations.ApiModelProperty;
 @Table(name="POSTS")
 public class Post {
 	
+
 	@ApiModelProperty(notes = "Auto generated unique value",required = true,position = 1)
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -58,7 +59,7 @@ public class Post {
 	private Date updatedOn;
 	
 	@ApiModelProperty(notes = "Comments of the post",required = false,position = 6)
-	@JsonManagedReference // Commentout this annotation if you want to use @jsonIgnore in Comment.java 
+	@JsonManagedReference // Comment out this annotation if you want to use @jsonIgnore in Comment.java 
 	@OneToMany(cascade = {CascadeType.ALL} , orphanRemoval = true) // with out this cascade property Comments will not be saved when you save the Post object
 	@JoinColumn(name="post_id")
 	private List<Comment> comments;
@@ -109,6 +110,31 @@ public class Post {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Post other = (Post) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 	
