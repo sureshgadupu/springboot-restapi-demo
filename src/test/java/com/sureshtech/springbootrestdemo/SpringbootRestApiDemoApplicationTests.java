@@ -12,8 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,15 +28,17 @@ import com.sureshtech.springbootrestdemo.entity.Post;
 import com.sureshtech.springbootrestdemo.entity.User;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 
 class SpringbootRestApiDemoApplicationTests {
 
 	Logger log = LoggerFactory.getLogger(SpringbootRestApiDemoApplicationTests.class);	
 	
-	private RestTemplate restTemplate = new RestTemplate();
+	//private RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	protected TestRestTemplate restTemplate ;
 	
-	private static final String ROOT_URL = "http://localhost:8085";
+	
 	
 	@Test
 	void contextLoads() {
@@ -46,7 +50,7 @@ class SpringbootRestApiDemoApplicationTests {
 	@Test
 	public void testAllPosts() {
 		
-		ResponseEntity<Post[]> responseEntity = restTemplate.getForEntity(ROOT_URL+"/posts", Post[].class);
+		ResponseEntity<Post[]> responseEntity = restTemplate.getForEntity("/posts", Post[].class);
 		List<Post> posts = Arrays.asList(responseEntity.getBody());
 		for (Post post : posts) {
 			System.out.println("Post = "+ post.getId() + " : "+ post.getTitle());
@@ -57,7 +61,7 @@ class SpringbootRestApiDemoApplicationTests {
 	
 	@Test
 	public void testGetPostById() {
-		ResponseEntity<Post> responseEntity = restTemplate.getForEntity(ROOT_URL+"/posts/10", Post.class);
+		ResponseEntity<Post> responseEntity = restTemplate.getForEntity("/posts/10", Post.class);
 		Post post = (Post) responseEntity.getBody();
 		assertEquals(10, post.getId().intValue());
 	}
@@ -70,7 +74,7 @@ class SpringbootRestApiDemoApplicationTests {
 		post.setContent("Testing create Post method content!!");
 		
 		ResponseEntity<Post> postResponse =
-		restTemplate.postForEntity(ROOT_URL+"/posts", post, Post.class);		
+		restTemplate.postForEntity("/posts", post, Post.class);		
 		assertNotNull(postResponse);		
 		assertNotNull(postResponse.getBody());
 	}
@@ -86,7 +90,7 @@ class SpringbootRestApiDemoApplicationTests {
 		comment.setName("Suresh");
 		
 		
-		ResponseEntity<Post>  post = restTemplate.postForEntity(ROOT_URL+"/posts/10/comments",comment,  Post.class);
+		ResponseEntity<Post>  post = restTemplate.postForEntity("/posts/10/comments",comment,  Post.class);
 		System.out.println(" post :"+ post.getBody().getComments().size());
 		for (Comment commentex  : post.getBody().getComments()) {
 			log.info(commentex.getId() + " : "+ commentex.getContent());
@@ -99,13 +103,13 @@ class SpringbootRestApiDemoApplicationTests {
 	public void testDeletePost() {
 		
 		int postId = 20;
-		ResponseEntity<Post> responseEntiry =  restTemplate.getForEntity(ROOT_URL+"/posts/"+postId, Post.class);
+		ResponseEntity<Post> responseEntiry =  restTemplate.getForEntity("/posts/"+postId, Post.class);
 		assertNotNull(responseEntiry);
 		
-		restTemplate.delete(ROOT_URL+"posts/"+postId);
+		restTemplate.delete("/posts/"+postId);
 		
 		try {
-			responseEntiry =  restTemplate.getForEntity(ROOT_URL+"/posts/"+postId, Post.class);
+			responseEntiry =  restTemplate.getForEntity("/posts/"+postId, Post.class);
 			
 		}catch(Exception e) {
 			log.error("Exception while deleting a Post ", e);
@@ -123,7 +127,7 @@ class SpringbootRestApiDemoApplicationTests {
 		user.setPassword("password");
 		
 		ResponseEntity<User> userResponse =
-		restTemplate.postForEntity(ROOT_URL+"/users", user, User.class);		
+		restTemplate.postForEntity("/users", user, User.class);		
 		assertNotNull(userResponse);		
 		assertNotNull(userResponse.getBody());
 	}
@@ -135,7 +139,7 @@ class SpringbootRestApiDemoApplicationTests {
 		
 		HttpEntity<String> entity = new HttpEntity<>("body", headers);
 		String user ="Suresh";
-		ResponseEntity<String> response = restTemplate.exchange(ROOT_URL+"/users/greet/"+user, HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> response = restTemplate.exchange("/users/greet/"+user, HttpMethod.GET, entity, String.class);
 		assertEquals("Welcome Suresh",response.getBody());		
 		
 	}
@@ -147,7 +151,7 @@ class SpringbootRestApiDemoApplicationTests {
 		
 		HttpEntity<String> entity = new HttpEntity<>("body", headers);
 		String user ="Suresh";
-		ResponseEntity<String> response = restTemplate.exchange(ROOT_URL+"/users/greet/"+user, HttpMethod.GET, entity, String.class);
+		ResponseEntity<String> response = restTemplate.exchange("/users/greet/"+user, HttpMethod.GET, entity, String.class);
 		assertEquals("Bienvenu Suresh",response.getBody());		
 		
 	}

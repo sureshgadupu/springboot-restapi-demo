@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +24,7 @@ import com.sureshtech.springbootrestdemo.entity.Post;
 import com.sureshtech.springbootrestdemo.views.PostView;
 
 @ExtendWith(SpringExtension.class)
-@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class PostJsonViewControllerTest {
 	
 	Logger log = LoggerFactory.getLogger(PostJsonViewControllerTest.class);
@@ -33,9 +33,11 @@ public class PostJsonViewControllerTest {
 	PostJsonViewController postJsonViewController;
 	
 
-	RestTemplate restTemplate = new RestTemplate();
+	//RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	protected TestRestTemplate restTemplate ;
 	
-	static String URL = "http://localhost:8085";
+	//static String URL = "http://localhost:8085";
 	
 	@org.junit.jupiter.api.Test
 	void contextLoads() {
@@ -45,7 +47,7 @@ public class PostJsonViewControllerTest {
 	@Test	
 	public void testGetPostForExternal() throws JsonProcessingException {
 		
-		ResponseEntity<Post> response = 	restTemplate.getForEntity(URL+"posts/external/10", Post.class);
+		ResponseEntity<Post> response = 	restTemplate.getForEntity("/posts/external/10", Post.class);
 		
 		Post post = (Post) response.getBody();
 		
@@ -70,7 +72,7 @@ public class PostJsonViewControllerTest {
 	@Test	
 	public void testGetPostForInternal() throws JsonProcessingException {
 		
-		ResponseEntity<Post> response = 	restTemplate.getForEntity(URL+"posts/internal/10", Post.class);
+		ResponseEntity<Post> response = 	restTemplate.getForEntity("/posts/internal/10", Post.class);
 		
 		Post post = (Post) response.getBody();
 		
@@ -92,7 +94,7 @@ public class PostJsonViewControllerTest {
 	@Test	
 	public void testGetPostForPartner() throws JsonProcessingException {
 		
-		ResponseEntity<Post> response = 	restTemplate.getForEntity(URL+"posts/partner/10", Post.class);
+		ResponseEntity<Post> response = 	restTemplate.getForEntity("/posts/partner/10", Post.class);
 		
 		Post post = (Post) response.getBody();
 		
